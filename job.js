@@ -41,7 +41,7 @@ function get_instance_log(url, callback) {
                 var instanceKey = log[i].instanceKey;
 
                 client.query(
-                    'INSERT into instancelog (activationId, name, orchestrationId, timestamp, instanceKey, log) VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
+                    'INSERT into instancelog (activationId, name, orchestrationId, timestamp, instanceKey, log) VALUES($1, $2, $3, $4, $5, $6)',
                     [activationId, name, orchestrationId, timestamp, instanceKey, log],
                     function(err, result) {
                         if (err) {
