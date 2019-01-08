@@ -42,17 +42,18 @@ function get_instance_log(url, callback) {
                 var activationId = log[i].activationId;
                 var name = log[i].name;
                 var orchestrationId = log[i].orchestrationId;
-                var timestamp = moment(log[i].timestamp/1000000).format();
+                var timestamp = log[i].timestamp;
+                var createdTime = moment(timestamp/1000000).format();
                 var instanceKey = log[i].instanceKey;
 
                 client.query(
-                    'INSERT into instancelog (activationId, name, orchestrationId, timestamp, instanceKey, log) VALUES($1, $2, $3, $4, $5, $6)',
-                    [activationId, name, orchestrationId, timestamp, instanceKey, log[i]],
+                    'INSERT into instancelog (activationId, name, orchestrationId, createdTime, instanceKey, log, timestamp) VALUES($1, $2, $3, $4, $5, $6, $7)',
+                    [activationId, name, orchestrationId, createdTime, instanceKey, log[i], timestamp],
                     function(err, result) {
                         if (err) {
                             console.log(err);
                         } else {
-                            
+
                         }
                     });
             }
@@ -72,7 +73,11 @@ conn.login('20121210@demo.com', 'abcd1234', function(err, userInfo) {
         return console.error(err);
     }
 
-     get_instance_log('/services/data/v44.0/iot/orchestrations/0FF10000000k9jHGAQ/instances/1/log', function () {
+    var now = new Date();
+    var ten_mins_ago = new Date(now - (1000 * 60 * 10));
+    var query_str = '?fromDate='+ now.toJSON() + '&toDate=' + ten_mins_ago.toJSON();
+
+    get_instance_log('/services/data/v44.0/iot/orchestrations/0FF10000000k9jHGAQ/instances/1/log', function () {
     //get_instance_log('/services/data/v44.0/iot/orchestrations/0FF10000000k9jHGAQ/instances/1/log?page=eyJmcm9tRGF0ZSI6bnVsbCwidG9EYXRlIjpudWxsLCJhcGV4TG9nSWQiOiIwN0wxMDAwMDAzUE9wS0hFQTEiLCJhcGV4TG9nU3RhcnRUaW1lIjoxNTQ2ODIzNTgxMDAwLCJhcGV4TG9nTGluZU51bWJlciI6MCwicGFnZVNpemUiOjIwMCwic29ydERpcmVjdGlvbiI6IkRlc2NlbmRpbmciLCJsYXN0IjpmYWxzZSwiaW5jbHVzaXZlIjpmYWxzZX0%3D', function () {
         console.log('done');
     });
