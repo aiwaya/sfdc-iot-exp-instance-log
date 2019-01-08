@@ -1,0 +1,8 @@
+{
+  "name": "sfdc-iot-exp-instance-log",
+  "version": "0.0.1",
+  "dependencies": {
+    "jsforce": "^1.9.1"
+
+  }
+}
