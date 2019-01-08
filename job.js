@@ -8,6 +8,9 @@ var conn = new jsforce.Connection({
     //loginUrl : sfdc_login_url
 });
 
+var moment = require('moment');
+moment().format();
+
 console.log('......... Start job .........');
 
 const { Client } = require('pg');
@@ -37,7 +40,7 @@ function get_instance_log(url, callback) {
                 var activationId = log[i].activationId;
                 var name = log[i].name;
                 var orchestrationId = log[i].orchestrationId;
-                var timestamp = log[i].timestamp;
+                var timestamp = moment(log[i].timestamp/1000000).format();
                 var instanceKey = log[i].instanceKey;
 
                 client.query(
