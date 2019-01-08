@@ -10,6 +10,15 @@ var conn = new jsforce.Connection({
 
 console.log('......... Start job .........');
 
+const Client = require('pg');
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+});
+
+client.connect();
+
 function get_instance_log(url, callback) {
     conn.requestGet(url, function (err, res) {
         if(err) { return console.log(err); }
@@ -31,7 +40,16 @@ function get_instance_log(url, callback) {
                 var timestamp = log[i].timestamp;
                 var instanceKey = log[i].instanceKey;
 
-
+                client.query(
+                    'INSERT into instancelog (activationId, name, orchestrationId, timestamp, instanceKey, log) VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
+                    [activationId, name, orchestrationId, timestamp, instanceKey, log],
+                    function(err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('row inserted with id: ' + result.rows[0].id);
+                        }
+                    });
             }
             get_instance_log(res.nextPageUrl, callback);
         }
