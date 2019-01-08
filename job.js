@@ -52,7 +52,7 @@ function get_instance_log(url, callback) {
                         if (err) {
                             console.log(err);
                         } else {
-                            console.log('row inserted with id: ' + result.rows[0].id);
+                            
                         }
                     });
             }
