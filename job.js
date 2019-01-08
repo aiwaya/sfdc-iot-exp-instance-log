@@ -10,7 +10,7 @@ var conn = new jsforce.Connection({
 
 console.log('......... Start job .........');
 
-const Client = require('pg');
+const { Client } = require('pg');
 
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
