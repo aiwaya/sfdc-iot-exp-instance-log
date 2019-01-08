@@ -15,12 +15,14 @@ console.log('......... Start job .........');
 
 const { Client } = require('pg');
 
+/*
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true
 });
 
 client.connect();
+*/
 
 function get_instance_log(url, callback) {
     conn.requestGet(url, function (err, res) {
@@ -45,7 +47,7 @@ function get_instance_log(url, callback) {
 
                 client.query(
                     'INSERT into instancelog (activationId, name, orchestrationId, timestamp, instanceKey, log) VALUES($1, $2, $3, $4, $5, $6)',
-                    [activationId, name, orchestrationId, timestamp, instanceKey, log],
+                    [activationId, name, orchestrationId, timestamp, instanceKey, log[i]],
                     function(err, result) {
                         if (err) {
                             console.log(err);
