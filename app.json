@@ -8,12 +8,12 @@
   },
   "env": {
     "ORCHESTRATION_ID": {
-      "description": "",
+      "description": "Orchestration ID",
       "value": "",
       "required": true
     },
     "INSTANCE_KEY": {
-      "description": "",
+      "description": "Instance key",
       "value": "",
       "required": true
     },
