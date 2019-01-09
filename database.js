@@ -15,4 +15,4 @@ pg_client.query('CREATE TABLE instancelog(activationId character varying(20) NOT
     }
 });
 
-client.end();
+pg_client.end();
