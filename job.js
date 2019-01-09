@@ -43,6 +43,7 @@ function save_instance_log(url, callback) {
             callback();
         } else {
             var log = res.log;
+            console.log(log.length + ' logs retreived');
 
             for(var i = 0; i < log.length; i++) {
                 var activationId = log[i].activationId;
