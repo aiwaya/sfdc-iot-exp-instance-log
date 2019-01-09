@@ -1,0 +1,50 @@
+{
+  "name": "SFDC IoT Explorer Instance Log",
+  "description": "SFDC IoT Explorer Instance Log",
+  "repository": "https://github.com/aiwaya/sfdc-iot-exp-activity-notify",
+  "addons": ["scheduler:standard", "papertrail:choklad", "heroku-postgresql"],
+  "scripts": {
+    "postdeploy": "node database.js"
+  },
+  "env": {
+    "ORCHESTRATION_ID": {
+      "description": "",
+      "value": "",
+      "required": true
+    },
+    "INSTANCE_KEY": {
+      "description": "",
+      "value": "",
+      "required": true
+    },
+    "API_VERSION": {
+      "description": "Salesforce API Version",
+      "value": "44.0",
+      "required": true
+    },
+    "USERNAME": {
+      "description": "Salesforce Username",
+      "value": "",
+      "required": true
+    },
+    "PASSWORD": {
+      "description": "Salesforce Password",
+      "value": "",
+      "required": true
+    },
+    "SECURITY_TOKEN": {
+      "description": "Salesforce Security Token",
+      "value": "",
+      "required": false
+    },
+    "LOGIN_URL": {
+      "description": "In case you want to login sandbox, please enter https://test.salesforce.com",
+      "value": "https://login.salesforce.com",
+      "required": true
+    }
+
+  }
+}
+
+
+

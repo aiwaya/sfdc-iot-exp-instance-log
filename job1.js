@@ -2,46 +2,47 @@
 'use strict'
 
 /*
- Postdeploy is run only once after the app has been created
+
  CREATE TABLE instancelog(activationId character varying(20) NOT NULL,name character varying(20) NOT NULL,orchestrationId character varying(20) NOT NULL,instanceKey character varying(20) NOT NULL,createdTime timestamp NOT NULL,timestamp bigint NOT NULL,log json NOT NULL, primary key(activationId, timestamp));
  */
 
-const api_version = process.env.API_VERSION; //44.0
-const username = process.env.USERNAME;
-const password = process.env.ASSWORD;
-const security_token = process.env.SECURITY_TOKEN;
-const login_url = process.env.LOGIN_URL;
-const instance_key = process.env.INSTANCE_KEY;
-const orchestration_id = process.env.ORCHESTRATION_ID;
-
-
 var jsforce = require('jsforce');
 var conn = new jsforce.Connection({
-    version : api_version,
-    loginUrl : login_url
+    version : '43.0'
+    //loginUrl : sfdc_login_url
 });
 
 var moment = require('moment');
 moment().format();
 
+console.log('......... Start job .........');
+
 const { Client } = require('pg');
-const pg_client = new Client({
+
+
+const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true
 });
-pg_client.connect();
+
+client.connect();
 
 
-function save_instance_log(url, callback) {
+function get_instance_log(url, callback) {
     conn.requestGet(url, function (err, res) {
         if(err) { return console.log(err); }
 
-        if(res.log.length == 0) {
+
+        console.log('called ');
+        var count = res.log.length;
+
+        if(count == 0) {
             callback();
         } else {
             var log = res.log;
 
             for(var i = 0; i < log.length; i++) {
+                //console.log(log[i]);
                 var activationId = log[i].activationId;
                 var name = log[i].name;
                 var orchestrationId = log[i].orchestrationId;
@@ -49,19 +50,28 @@ function save_instance_log(url, callback) {
                 var createdTime = moment(timestamp/1000000).format();
                 var instanceKey = log[i].instanceKey;
 
-                pg_client.query(
+                client.query(
                     'INSERT into instancelog (activationId, name, orchestrationId, createdTime, instanceKey, log, timestamp) VALUES($1, $2, $3, $4, $5, $6, $7)',
                     [activationId, name, orchestrationId, createdTime, instanceKey, log[i], timestamp],
                     function(err, result) {
-                        if (err) {console.log(err);}
+                        if (err) {
+                            console.log(err);
+                        } else {
+
+                        }
                     });
             }
             get_instance_log(res.nextPageUrl, callback);
         }
+
+
+
+
+
     });
 }
 
-conn.login(username, password + security_token, function(err, userInfo) {
+conn.login('20121210@demo.com', 'abcd1234', function(err, userInfo) {
     if (err) {
         console.log('Salesforce login failure');
         return console.error(err);
@@ -70,9 +80,9 @@ conn.login(username, password + security_token, function(err, userInfo) {
     var now = new Date();
     var ten_mins_ago = new Date(now - (1000 * 60 * 10));
     var query_str = '?fromDate='+ now.toJSON() + '&toDate=' + ten_mins_ago.toJSON();
-    var url = '/services/data/v' + api_version + '/iot/orchestrations/' + orchestration_id + '/instances/' + instance_key + '/log';
 
-    save_instance_log(url, function () {
+    get_instance_log('/services/data/v44.0/iot/orchestrations/0FF10000000k9jHGAQ/instances/1/log', function () {
+    //get_instance_log('/services/data/v44.0/iot/orchestrations/0FF10000000k9jHGAQ/instances/1/log?page=eyJmcm9tRGF0ZSI6bnVsbCwidG9EYXRlIjpudWxsLCJhcGV4TG9nSWQiOiIwN0wxMDAwMDAzUE9wS0hFQTEiLCJhcGV4TG9nU3RhcnRUaW1lIjoxNTQ2ODIzNTgxMDAwLCJhcGV4TG9nTGluZU51bWJlciI6MCwicGFnZVNpemUiOjIwMCwic29ydERpcmVjdGlvbiI6IkRlc2NlbmRpbmciLCJsYXN0IjpmYWxzZSwiaW5jbHVzaXZlIjpmYWxzZX0%3D', function () {
         console.log('done');
     });
 });
