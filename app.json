@@ -1,7 +1,7 @@
 {
   "name": "SFDC IoT Explorer Instance Log",
   "description": "SFDC IoT Explorer Instance Log",
-  "repository": "https://github.com/aiwaya/sfdc-iot-exp-activity-notify",
+  "repository": "https://github.com/aiwaya/sfdc-iot-exp-instance-log",
   "addons": ["scheduler:standard", "papertrail:choklad", "heroku-postgresql"],
   "scripts": {
     "postdeploy": "node database.js"
