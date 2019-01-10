@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 
-/*
+
 const api_version = process.env.API_VERSION;
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
@@ -9,8 +9,8 @@ const security_token = process.env.SECURITY_TOKEN;
 const login_url = process.env.LOGIN_URL;
 const instance_key = process.env.INSTANCE_KEY;
 const orchestration_id = process.env.ORCHESTRATION_ID;
-*/
 
+/*
 
 const api_version = '44.0'; //44.0
 const username = '20121210@demo.com';
@@ -19,7 +19,7 @@ const security_token = '';
 const login_url = 'https://login.salesforce.com/'
 const instance_key = '1';
 const orchestration_id = '0FF10000000k9jHGAQ';
-
+*/
 
 const jsforce = require('jsforce');
 const conn = new jsforce.Connection({
