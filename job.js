@@ -62,7 +62,7 @@ function save_instance_log(url, callback) {
                     [activationId, name, orchestrationId, createdTime, instanceKey, log[i], timestamp],
                     function(err, result) {
                         if (err) {
-                            if(err.error != 'duplicate key value violates unique constraint "instancelog_pkey"')
+                            if(err.constraint != 'instancelog_pkey')
                                 console.log(err);
                         }
                     });
