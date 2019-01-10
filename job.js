@@ -44,6 +44,7 @@ function save_instance_log(url, callback) {
         } else {
             var log = res.log;
             console.log(log.length + ' logs retreived');
+            console.log(moment(timestamp / 1000000).format() + ' in heroku');
 
             for(var i = 0; i < log.length; i++) {
                 var activationId = log[i].activationId;
