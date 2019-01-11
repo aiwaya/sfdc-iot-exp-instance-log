@@ -8,6 +8,7 @@ const security_token = process.env.SECURITY_TOKEN;
 const login_url = process.env.LOGIN_URL;
 const instance_key = process.env.INSTANCE_KEY;
 const orchestration_id = process.env.ORCHESTRATION_ID;
+const timezone = process.env.TIMEZONE;
 
 const jsforce = require('jsforce');
 const conn = new jsforce.Connection({
@@ -15,7 +16,8 @@ const conn = new jsforce.Connection({
     loginUrl : login_url
 });
 
-const moment = require('moment');
+//const moment = require('moment');
+const moment = require('moment-timezone');
 moment().format();
 
 const { Client } = require('pg');
@@ -41,12 +43,14 @@ function save_instance_log(url, callback) {
                 let name = log[i].name;
                 let orchestrationId = log[i].orchestrationId;
                 let timestamp = log[i].timestamp;
-                let createdTime = moment(timestamp / 1000000).format();
+                let createdTimeLocal = moment(timestamp / 1000000).tz(timezone).format();
+                let createdTimeUTC = moment(timestamp / 1000000).format();
+
                 let instanceKey = log[i].instanceKey;
 
                 pg_client.query(
-                    'INSERT into instancelog (activationId, name, orchestrationId, createdTimeUTC, instanceKey, log, timestamp) VALUES($1, $2, $3, $4, $5, $6, $7)',
-                    [activationId, name, orchestrationId, createdTime, instanceKey, log[i], timestamp],
+                    'INSERT into instancelog (activationId, name, orchestrationId, createdTimeLocal, createdTimeUTC, instanceKey, log, timestamp) VALUES($1, $2, $3, $4, $5, $6, $7)',
+                    [activationId, name, orchestrationId, createdTimeLocal, createdTimeUTC, instanceKey, log[i], timestamp],
                     function(err, result) {
                         if (err) {
                             if(err.constraint != 'instancelog_pkey')

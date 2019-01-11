@@ -2,7 +2,7 @@
   "name": "SFDC IoT Explorer Instance Log",
   "description": "SFDC IoT Explorer Instance Log",
   "repository": "https://github.com/aiwaya/sfdc-iot-exp-instance-log",
-  "addons": ["scheduler:standard", "papertrail:choklad", "heroku-postgresql"],
+  "addons": ["scheduler:standard", "papertrail:choklad", "heroku-postgresql", "trevor:trial"],
   "scripts": {
     "postdeploy": "node database.js"
   },
@@ -10,6 +10,11 @@
     "ORCHESTRATION_ID": {
       "description": "Orchestration ID",
       "value": "",
+      "required": true
+    },
+    "TIMEZONE": {
+      "description": "Timezone such as America/Los_Angeles, Asia/Taipei, Asia/Tokyo",
+      "value": "Asia/Tokyo",
       "required": true
     },
     "INSTANCE_KEY": {

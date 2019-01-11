@@ -6,7 +6,7 @@ const db = pgp(process.env.DATABASE_URL);
 
 db.tx(t => {
     return t.batch([
-        t.none('CREATE TABLE instancelog(activationId character varying(20) NOT NULL,name character varying(20) NOT NULL,orchestrationId character varying(20) NOT NULL,instanceKey character varying(20) NOT NULL,createdTimeUTC timestamp NOT NULL,timestamp bigint NOT NULL,log json NOT NULL, primary key(activationId, timestamp))')
+        t.none('CREATE TABLE instancelog(activationId character varying(20) NOT NULL,name character varying(20) NOT NULL,orchestrationId character varying(20) NOT NULL,instanceKey character varying(20) NOT NULL,createdTimeLocal timestamp NOT NULL,createdTimeUTC timestamp NOT NULL,timestamp bigint NOT NULL,log json NOT NULL, primary key(activationId, timestamp))')
     ]);
 })
     .then(data => {
