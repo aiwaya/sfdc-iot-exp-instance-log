@@ -49,7 +49,7 @@ function save_instance_log(url, callback) {
                 let instanceKey = log[i].instanceKey;
 
                 pg_client.query(
-                    'INSERT into instancelog (activationId, name, orchestrationId, createdTimeLocal, createdTimeUTC, instanceKey, log, timestamp) VALUES($1, $2, $3, $4, $5, $6, $7)',
+                    'INSERT into instancelog (activationId, name, orchestrationId, createdTimeLocal, createdTimeUTC, instanceKey, log, timestamp) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
                     [activationId, name, orchestrationId, createdTimeLocal, createdTimeUTC, instanceKey, log[i], timestamp],
                     function(err, result) {
                         if (err) {
